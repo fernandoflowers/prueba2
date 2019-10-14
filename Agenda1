@@ -1,0 +1,130 @@
+ #include <fstream>
+#include <stdlib.h>
+ #include<stdio.h>
+ #include<string.h>
+
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+typedef struct
+{
+	char Nombre[50];
+	char Correo[50];
+	char Telefono[50];
+}TPersonas;
+
+TPersonas Personas[25];
+int n;
+
+void leer(int i)
+{
+
+		fflush(stdin);
+	    printf("\nDame el nombre de la persona [%d]: ", i);
+	    scanf("%100[^\n]" ,Personas[i].Nombre);
+	    printf("Dame el Correo: ");
+	    scanf("%s",&Personas[i].Correo);
+	    printf("Dame el Telefono: ");
+	    scanf(" %s",&Personas[i].Telefono);
+	    printf("\n");
+}// fin leer
+
+void mostrar(int i, int n)
+{
+	for (i=1; i<n; i++)
+	{
+
+		printf("\nDatos de la persona [%d]: ", i);
+		printf("\nNombre: %s", Personas[i].Nombre);
+		printf("\n Correo: %s", Personas[i].Correo);
+		printf("\nTelefono: %s", Personas[i].Telefono);
+		printf("\n");
+	}
+}// fin mostrar
+
+void guardar(int i, int n)
+{
+	FILE *ARCHIVO;
+	ARCHIVO= fopen("Pruebas.txt","wt");
+	for (i=1; i<n; i++)
+	{
+		fprintf(ARCHIVO,"\nDatos de la Persona [%d]: ", i);
+		fprintf(ARCHIVO,"\nNombre: %s", Personas[i].Nombre);
+		fprintf(ARCHIVO,"\n Correo: %s", Personas[i].Correo);
+		fprintf(ARCHIVO,"\nTelefono: %s", Personas[i].Telefono);
+		fprintf(ARCHIVO,"\n");
+	}
+	fclose(ARCHIVO);
+}
+
+void contactos (int n){
+	int aux, i, j;
+	char auxc[50];
+
+	system("cls");
+
+	for(i=1;i<n;i++){
+		for(j=1;j<n-i;j++){
+			if(strcmp(Personas[j].Nombre,Personas[j+1].Nombre)>0){
+
+				strcpy(auxc,Personas[j].Nombre);
+				strcpy(Personas[j].Nombre,Personas[j+1].Nombre);
+				strcpy(Personas[j+1].Nombre,auxc);
+
+				strcpy(auxc,Personas[j].Correo);
+				strcpy(Personas[j].Correo,Personas[j+1].Correo);
+				strcpy(Personas[j+1].Correo,auxc);
+
+				strcpy(auxc,Personas[j].Telefono);
+				strcpy(Personas[j].Telefono,Personas[j+1].Telefono);
+				strcpy(Personas[j+1].Telefono,auxc);
+			}
+		}
+	}
+}
+
+int main(int argc,char *argv[])///////////////////////int main
+{
+	 char texto[256];
+    ofstream impresora("PRN");
+    ifstream archivo("Pruebas.txt");
+	int n=1;
+	int opc;
+	int i=1;
+
+	printf("Programa que Captura datos para una agenda\n");
+	printf("MENU\n");
+
+    do
+    {
+        printf("\n1.Agregar contacto\t2.Monstrar Contactos\t3.Guardar contactos\t 4.Salir\n");
+        printf("\n\n   Introduzca opcion (1-4): ");
+        scanf( "%d", &opc );
+
+        switch ( opc)
+        {
+            case 1:
+					leer(i);
+					 i++;
+         			 n++;
+                    break;
+
+            case 2: mostrar(i, n);
+                    break;
+
+            case 3: contactos(n);
+					guardar(i, n);
+            		printf("\n\n\n\tCONTACTOS GUARDADOS!!!!!\n\n");
+                    break;
+         }
+
+    } while ( opc!= 4);
+
+	printf("Gracias por Usarme :)\n\n ADIOOSSS!!!!");
+
+
+
+	return 0;
+}
+
